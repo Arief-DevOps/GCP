@@ -1,5 +1,5 @@
 #this block of code adds a VPC
-resource "google_compute_network" "vpc-network-team3" {
+resource "google_compute_network" "vpc-network-wps" {
   name                    = var.vpc_name
   auto_create_subnetworks = "true"
   routing_mode            = "GLOBAL"
@@ -9,13 +9,13 @@ resource "google_compute_network" "vpc-network-team3" {
    name          = "public"
    ip_cidr_range = "192.168.10.0/24"
    region  = var.region
-   network = google_compute_network.vpc-network-team3.id
+   network = google_compute_network.vpc-network-wps.id
  }
 
 #module for the firewall block
 resource "google_compute_firewall" "allow-traffic" {
   name    = "test-firewall"
-  network = google_compute_network.vpc-network-team3.name
+  network = google_compute_network.vpc-network-wps.name
 
   allow {
     protocol = "icmp"
@@ -31,7 +31,7 @@ resource "google_compute_firewall" "allow-traffic" {
 
 #this block of codeadds an autoscaling group in a zone specified in the variables file using an instance group manager as a target
 
-resource "google_compute_autoscaler" "team3" {
+resource "google_compute_autoscaler" "wps" {
      depends_on = [
         google_sql_database_instance.database,
         
@@ -93,7 +93,7 @@ resource "google_compute_instance_template" "compute-engine" {
   }
 
   network_interface {
-    network = google_compute_network.vpc-network-team3.id
+    network = google_compute_network.vpc-network-wps.id
     access_config {
       // Include this section to give the VM an external ip address
     }
@@ -102,7 +102,7 @@ resource "google_compute_instance_template" "compute-engine" {
 }
 #creating a target pool
 
-resource "google_compute_target_pool" "team3" {
+resource "google_compute_target_pool" "wps" {
   name    = var.targetpool_name
   project = var.project_name
   region  = var.region
@@ -117,8 +117,8 @@ resource "google_compute_instance_group_manager" "my-igm" {
     instance_template = google_compute_instance_template.compute-engine.self_link
     name              = "primary"
   }
-  target_pools       = [google_compute_target_pool.team3.self_link]
-  base_instance_name = "team3"
+  target_pools       = [google_compute_target_pool.wps.self_link]
+  base_instance_name = "wps"
 }
 
 #indicating the image for the instance.
@@ -137,7 +137,7 @@ module "lb" {
   name         = var.lb_name
   service_port = 80
   target_tags  = ["my-target-pool"]
-  network      = google_compute_network.vpc-network-team3.name
+  network      = google_compute_network.vpc-network-wps.name
 }
 
 #this code of block will provision a database instance. specify the version, the region and the password in the variables file 
@@ -179,3 +179,4 @@ resource "google_sql_user" "users" {
   host     = var.db_host
   password = var.db_password
 }
+
