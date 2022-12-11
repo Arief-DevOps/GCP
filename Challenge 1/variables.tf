@@ -104,7 +104,7 @@ variable "data_base_version" {
 
 variable "db_username" {
   type        = string
-  default     = "pedrobalza"
+  default     = "sarief"
   description = "input the database authorized user "
 }
 
