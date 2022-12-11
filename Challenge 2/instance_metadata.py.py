@@ -14,5 +14,5 @@ def instance_metadata(project_id: str, zone: str) -> Iterable[compute_v1.Instanc
     return instance_data
 
 
-instance_metadata("team3-438q", "us-west4-b")
+instance_metadata("Dev-proj", "us-west4-b")
 
