@@ -6,7 +6,7 @@ variable "project_name" {
 
 variable "vpc_name" {
   type        = string
-  default     = "vpc-network-team"
+  default     = "vpc-network-dev"
   description = "desired name of the vpc being created"
 }
 
@@ -36,7 +36,7 @@ variable "zone" {
 
 variable "ASG_name" {
   type        = string
-  default     = "my-autoscaler-team3"
+  default     = "my-autoscaler-wps"
   description = "desired name for the autoscaling"
 }
 
@@ -52,11 +52,6 @@ variable "maximum_instances" {
   description = "maximum desired instances running at a given point"
 }
 
-variable "machine_type" {
-  type        = string
-  default     = "e2-small"
-  description = "add your machine type"
-}
 
 variable "template_name" {
   type        = string
@@ -91,7 +86,7 @@ variable "lb_name" {
 
 variable "dbinstance_name" {
   type        = string
-  default     = "kildare"
+  default     = "dbss"
   description = "name of database instance"
 }
 
